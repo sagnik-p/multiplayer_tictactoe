@@ -5,6 +5,7 @@ const server=http.createServer(app);
 const cors=require("cors");
 const { Server } = require("socket.io");
 const { basename } = require("path");
+const { connect } = require("http2");
 const io = new Server(server, { cors: {origin: "*",}, });
 var playersid=[];
 var players=[];
@@ -68,6 +69,7 @@ io.on("connection", (socket) => {
       console.log(`User ${socket.id} disconnected from the room`);
       playersid.splice(playersid.indexOf(socket.id),1);
       players.splice(playersid.indexOf(socket.id),1);
+      reset()
       console.log(players);
       console.log(playersid);
      });
@@ -119,11 +121,12 @@ function isDraw()
 function gameWon(s)
 {
   console.log("game won by " + s);
+  io.emit("game-won", s)
 }
 function matchDraw()
 {
-    disableButtons();
-    document.getElementById("msgbox").append("Draw ");
+  console.log("draw");
+  io.emit("game-draw");
 }
 function invertTurn()
 {
