@@ -58,7 +58,7 @@ socket.on("reset-match",()=>{
 var msgbox = document.getElementById("msgbox");
 var roominfo=document.getElementById("roomInfo");
 var isMoveAllowed=true;
-let bMatrix = [[document.getElementById("g00"),document.getElementById("g01"),document.getElementById("g02")],[document.getElementById("g10"),document.getElementById("g11"),document.getElementById("g12")],[document.getElementById("g20"),document.getElementById("g21"),document.getElementById("g22")]];
+let bMatrix = [[document.getElementById("b00"),document.getElementById("b01"),document.getElementById("b02")],[document.getElementById("b10"),document.getElementById("b11"),document.getElementById("b12")],[document.getElementById("b20"),document.getElementById("b21"),document.getElementById("b22")]];
 let board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
 function clicked(a,b)
 {

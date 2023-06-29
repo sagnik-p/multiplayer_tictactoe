@@ -1,0 +1,102 @@
+#grid-container {
+  display: grid;
+  width: 300px;
+  height: 300px;
+  padding: 0px;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px;
+}
+/*
+.btn {
+  font-stretch: expanded;
+  color: red;
+  height: 100px;
+  width: 100px;
+  text-emphasis-color: rgb(0, 255, 136);
+  font-weight: bolder;
+  border-width: 2px;
+  opacity: 1;
+  text-align: center;
+  text-emphasis: true;
+  text-decoration-color: red;
+  background-color: red;
+  border-color: black;
+  font-size: 10px;
+  opacity: 1;
+  z-index: 2;
+  hover: white;}*/
+.btn
+{
+  font-style: normal;
+  font-size: 20px;
+  text-emphasis-color: red;
+  text-emphasis: true;
+  -webkit-text-fill-color: red;
+}
+img {
+  z-index: -1;
+  position: absolute;
+}
+
+#grid-container {
+  margin-top: 100px;
+  align-content: center;
+}
+
+#controls {
+  margin-left: auto;
+  /*margin: auto;*/
+  margin-right: auto;
+  /*width: 50%;*/
+  margin-top: 100px;
+  justify-content: center;
+  /*margin-left: 50%;*/
+  /*margin-right: 50%;*/
+  display: inline-grid;
+  width: 583px;
+  align-self: center;
+  /*align-items: center;*/
+  grid-template-columns: 300px 100px 100px;
+  /*border: 10px;*/
+  /*border-width: 10px;*/
+  /*border-color: black;*/
+  align-items: center;
+  grid-column-gap: 10px;
+  /*grid-column: 10px;*/
+}
+
+.display-box {
+  justify-content: center;
+  text-align: center;
+  /*border-color: black;*/
+  border-radius: 5%;
+  border-color: green;
+  border: solid;
+  /*border: black;*/
+}
+
+#msgbox {
+  width: 300px;
+  height: 50px;
+  /*justify-content: center;*/
+}
+
+#roominfo {
+  flex-direction: column;
+  display: flex;
+  padding-top: 5px;
+  height: 50px;
+}
+
+#reset-btn {
+  align-items: center;
+  align-content: center;
+  align-self: center;
+}
+.workspace {
+  align-items: center;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+

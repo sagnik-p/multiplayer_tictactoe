@@ -1,53 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="light" lang="en">
+
 <head>
-    <link rel="stylesheet" href="styles.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Tic Tac Toe Multiplayer</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
 <body>
-    <div id ="workspace">
-        <div id="grid-image-div"><img src="gridsquare1.png" alt="" srcset="" id="board-grid"></div>
-        <div id="board" class="grid-container">
-            
-            <div class = "box" id="g00">
-                <input class ="btn" type="button" value="" id="b00" onclick="clicked(0,0)">
-            </div>
-            <div class = "box" id="g01">
-                <input class ="btn" type="button" value="" id="b01" onclick="clicked(0,1)">
-            </div>
-            <div class = "box" id="g02">
-                <input class ="btn" type="button" value="" id="b02" onclick="clicked(0,2)">
-            </div>
-            <div class = "box" id="g10">
-                <input class ="btn" type="button" value="" id="b10" onclick="clicked(1,0)">
-            </div>
-            <div class = "box" id="g11">
-                <input class ="btn" type="button" value="" id="b11" onclick="clicked(1,1)">
-            </div>
-            <div class = "box" id="g12">
-                <input class ="btn" type="button" value="" id="b12" onclick="clicked(1,2)">
-            </div>
-            <div class = "box" id="g20">
-                <input class ="btn" type="button" value="" id="b20" onclick="clicked(2,0)">
-            </div>
-            <div class = "box" id="g21">
-                <input class ="btn" type="button" value="" id="b21" onclick="clicked(2,1)">
-            </div>
-            <div class = "box" id="g22">
-                <input class ="btn" type="button" value="" id="b22" onclick="clicked(2,2)">
-            </div>
+    <div class="workspace">
+        <div class="container text-danger text-bg-light" id="grid-container"><img src="assets/img/gridsquare1.png" width="300" height="300"><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g00" type="button" onclick="clicked(0,0)" value=" "></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g01" type="button" onclick="clicked(0,1)" value=""></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g02" type="button" onclick="clicked(0,2)" value=" "></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g10" type="button" onclick="clicked(1,0)" value=" "></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g11" type="button" onclick="clicked(1,1)" value=" "></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g12" type="button" onclick="clicked(1,2)" value=" "></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g20" type="button" onclick="clicked(2,0)" value=" "></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g21" type="button" onclick="clicked(2,1)" value=" "></button><button class="btn btn-light text-center shadow" data-bss-hover-animate="pulse" id="g22" type="button" onclick="clicked(2,2)" value=" "></button></div>
+        <div class="container" id="controls">
+            <div id="msgbox" class="display-box" style="height: 100px;"></div>
+            <div id="roominfo" class="display-box" style="height: 100px;"></div><button class="btn btn-primary text-center" data-bss-hover-animate="swing" id="reset-btn" type="button" onclick="resetButtonClicked()" style="opacity: 1;filter: brightness(200%);font-size: 30px;width: 150px;height: 100px;color: #2b265b;">Reset</button>
         </div>
     </div>
-    <div id="options">
-        <div id = "msgbox"></div>
-        <div id="roomInfo"></div>
-        <input type="reset" value="Restart" id = "resetbtn" onclick="resetButtonClicked()">
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.1/socket.io.js" ></script>
     <script src="script.js">
     </script>
 </body>
+</body>
+
 </html>
