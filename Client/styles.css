@@ -12,7 +12,7 @@
     display: flex;
     margin: auto;
     margin-top: 50px ;
-    width: 300px;
+    width: auto;
     border: green;
     border: solid;
     height: 100px;
@@ -37,18 +37,18 @@ body{
 }
 #msgbox
 {
-    width: 80px;
+    width: auto;
     background-color: white;
     color: black;
     font-size: large;
-    height: 20px;
+    height: 25px;
     position: relative;
     margin: auto;
-    border: 10px;
-    background: rgb(82, 210, 168);
-    text-align: justify;
+    border: 20px;
+    background: rgb(255, 255, 255);
+    text-align: center;
     align-content: center;
-    border-radius: 10%;
+    border-radius: 20%;
 }
 #board-grid
 {
@@ -69,7 +69,7 @@ body{
 }
 #resetbtn
 {
-    border-radius: 40%;
+    border-radius: 30%;
     width: 100px;
     margin-top: 25px;
     margin-bottom: 25px;

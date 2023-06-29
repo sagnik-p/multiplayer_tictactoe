@@ -4,8 +4,6 @@ const http = require("http");
 const server=http.createServer(app);
 const cors=require("cors");
 const { Server } = require("socket.io");
-const { basename } = require("path");
-const { connect } = require("http2");
 const io = new Server(server, { cors: {origin: "*",}, });
 var playersid=[];
 var players=[];
@@ -15,7 +13,6 @@ var board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
 app.use( cors( {origin: "*",} ) );
 app.get("/", function (req, res) {res.sendFile(__dirname+"/index.html");});
 io.on("connection", (socket) => {
-  console.log("inside");
     socket.on("player-joined", (playerName) => {
        console.log("new player " + playerName+ " wants to join");
       if(!(playerName in players) && players.length<2)
@@ -23,9 +20,7 @@ io.on("connection", (socket) => {
         players.push(playerName);
         playersid.push(socket.id);
         socket.emit("player-approved",symbols[players.length-1]);
-        console.log("now playing\n");
-        console.log(players);
-        console.log(playersid);
+        io.emit("player-list",players);
       }else{
         console.log("player "+ playerName + " was rejected");
         socket.emit("room-full");
@@ -50,18 +45,9 @@ io.on("connection", (socket) => {
           socket.emit("message","wrong place");
       }
     });
-
-    socket.on("reset-game", (roomid) => {
-      roomManager.resetGame(roomid);
-      io.emit("reset-game" + roomid, roomid);
-      io.emit("game-update" + roomid, roomManager.getRoom(roomid));
-    });
-    socket.on("get-room", (roomId) => {
-      let room = roomManager.getRoom(roomId);
-      socket.emit("get-room" + roomId, room);
-    });
-    socket.on("create-room", (roomId) => {
-      roomManager.createRoom(roomId);
+    socket.on("reset-request",()=>
+    {
+      reset();
     });
     socket.on("disconnect", () =>
     {
@@ -72,6 +58,15 @@ io.on("connection", (socket) => {
       reset()
       console.log(players);
       console.log(playersid);
+     });
+     socket.on("request-room-info", () =>
+    {
+      if(playerName.length==1)
+      {
+        io.emit("waiting");
+      }else{
+      io.emit("room-info",[playerName[0] + "(X)",playerName[1] + "(O)"]);
+    }
      });
 });
 let PORT = 5000;
@@ -146,6 +141,6 @@ function getNameFromId(id)
 function reset()
 {
   board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
-  playersid=[];
-  players=[];
+  turn="X";
+  io.emit("board-update",board);
 }

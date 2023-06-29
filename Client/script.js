@@ -1,31 +1,36 @@
-input = window.prompt('Enter Your name:');
+input = window.prompt('Enter Your Name:');
 while(input ==='' || input == null)
 {
     input=window.prompt("Enter your Name");
 }
 const playerName = input;
-console.log("Name is" + playerName);
+//console.log("Name is" + playerName);
+
 const socket = io("ws://localhost:5000");
 socket.emit("player-joined",playerName, () => {
-    console.log("Informed the server that a player has joined");
+    //console.log("Informed the server that a player has joined");
 });
 var sym;
 socket.on("player-approved", (playersSymbol) =>{
     this.sym=playersSymbol;
-    console.log("you have been approved to play with symbol "+ sym);
+    //console.log("you have been approved to play with symbol "+ sym);
 });
 socket.on("game-won",(s) =>{
-    console.log(s+" won the game");
+    //console.log(s+" won the game");
     showMessage(s + "won");
-    freezeBoard();
+    isMoveAllowed=false;
 });
 socket.on("draw", () =>{
     console.log("Draw");
-    showMessage("draw");
-    freezeBoard();
+    showMessage("Draw");
+    isMoveAllowed=false;
+});
+socket.on("player-list",(playerList) =>
+{
 });
 socket.on("room-full",()=>{
     console.log("sorry, you are not allowed to play");
+    window.prompt("Sorry Room FUll")
 });
 socket.on("message",(msg)=>{
     console.log("msg received" + msg);
@@ -44,11 +49,14 @@ socket.on("board-update", (updatedBoard) => {
     }
 });
 socket.on("freeze",()=>{
-    freezeBoard();
+    isMoveAllowed=false;
 });
-var messageToUser="Hello";
+socket.on("reset-match",()=>{
+    updateBoard();
+    isMoveAllowed=true;
+});
 var msgbox = document.getElementById("msgbox");
-msgbox.style.opacity=1;
+var roominfo=document.getElementById("roomInfo");
 var isMoveAllowed=true;
 let bMatrix = [[document.getElementById("b00"),document.getElementById("b01"),document.getElementById("b02")],[document.getElementById("b10"),document.getElementById("b11"),document.getElementById("b12")],[document.getElementById("b20"),document.getElementById("b21"),document.getElementById("b22")]];
 let board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
@@ -61,10 +69,11 @@ function clicked(a,b)
         })
     }
 }
+var playersInRoom=[];
 
 function resetButtonClicked()
 {
-
+    socket.emit("reset-request");
 }
 function updateBoard()
 {
@@ -80,7 +89,17 @@ function showMessage(msg)
 {
     msgbox.innerHTML = msg;
 }
-function freezeBoard()
+function showRoomInfo()
 {
-    isMoveAllowed=false;
+    socket.emit("request-room-info");
+    socket.on("waiting",()=>
+    {
+        roominfo.innerHTML="Waiting";
+    })
+    socket.on("room-info",(info) =>
+    {
+        roominfo.innerHTML=info[0];
+        roominfo.innerHTML="<br>";
+        roominfo.innerHTML=info[1];
+    })
 }
