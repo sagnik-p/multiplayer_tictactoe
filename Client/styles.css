@@ -1,0 +1,81 @@
+.grid-container
+{
+    margin: 25px;
+    z-index: 2;
+    display: grid;
+    position: absolute;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+}
+#options
+{
+    display: flex;
+    margin: auto;
+    margin-top: 50px ;
+    width: 300px;
+    border: green;
+    border: solid;
+    height: 100px;
+}
+.btn
+{
+    font-stretch: expanded;
+    font-size: 80px;
+    padding: 10px;
+    text-emphasis: true;
+    color: red;
+    background-color:transparent;
+    opacity: 1;
+    height: 100px;
+    width: 100px;
+    padding: 5px;
+    text-align: center;
+    border: transparent;
+}
+body{
+    background-color: white;
+}
+#msgbox
+{
+    width: 80px;
+    background-color: white;
+    color: black;
+    font-size: large;
+    height: 20px;
+    position: relative;
+    margin: auto;
+    border: 10px;
+    background: rgb(82, 210, 168);
+    text-align: justify;
+    align-content: center;
+    border-radius: 10%;
+}
+#board-grid
+{
+    margin: 25px;
+    position: absolute;
+    height : 300px;
+    width : 300px;
+    z-index: 1;
+}
+#workspace
+{
+    margin: auto;
+    align-items: center;
+    height:350px;
+    width: 350px;;
+    border-color: black;
+    position: relative;
+}
+#resetbtn
+{
+    border-radius: 40%;
+    width: 100px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    position: relative;
+    font-size: large;
+    color: #089473;
+}
