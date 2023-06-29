@@ -22,7 +22,7 @@ socket.on("message",(msg)=>{
 });
 socket.on("board-update", (updatedBoard) => {
     console.log("Updated board received");
-    console.log(updateBoard);
+    console.log(updatedBoard);
     for(let i=0;i<3;i++)
     {
         for(let j=0;j<3;j++)
@@ -45,7 +45,7 @@ function clicked(a,b)
 }
 function resetButtonClicked()
 {
-    
+
 }
 function updateBoard()
 {

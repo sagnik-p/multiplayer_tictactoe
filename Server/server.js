@@ -4,6 +4,7 @@ const http = require("http");
 const server=http.createServer(app);
 const cors=require("cors");
 const { Server } = require("socket.io");
+const { basename } = require("path");
 const io = new Server(server, { cors: {origin: "*",}, });
 var playersid=[];
 var players=[];
@@ -46,7 +47,7 @@ io.on("connection", (socket) => {
           socket.emit("message","not your turn");
         else
           socket.emit("message","wrong place");
-        }
+      }
     });
 
     socket.on("reset-game", (roomid) => {
