@@ -7,11 +7,9 @@ const { Server } = require("socket.io");
 const io = new Server(server, { cors: {origin: "*",}, });
 var playersid=[];
 var players=[];
-const symbols=["X","O"]
-const roomManager=require("./roommanager");
+const symbols=["X","O"];
+let board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
 app.use( cors( {origin: "*",} ) );
-
-
 app.get("/", function (req, res) {res.sendFile(__dirname+"/index.html");});
 
 io.on("connection", (socket) => {
@@ -49,9 +47,22 @@ io.on("connection", (socket) => {
         console.log("player entered, data emitted");
       });
     });
-    socket.on("tile-click", (a,b) => {
-      let room = roomManager.getRoom(socket.roomId);
-      console.log("coordinates received : ("+a+","+b+")");
+    socket.on("tile-click", (a,b,sym) => {
+      console.log("coordinates received "+sym+": ("+a+","+b+")");
+      if(board[a][b] != ' ')
+      {
+        console.log("Invalid move detected")
+        socket.emit("message","invalid move");
+      }
+      else
+      {
+        console.log("valid move");
+        board[a][b]=sym;
+        io.emit('board-update',board);
+      }
+
+
+/*
       //if (roomManager.isRoomPlaying(socket.roomId)==false) { // match not in progress, this is the first move
         room.tiles[coordinates] = roomManager.getPlayer(room, socket.id).shape;
         room.nextPlayer = socket.id;//emit to all clients
@@ -64,7 +75,7 @@ io.on("connection", (socket) => {
         return;
       room.tiles[coordinates] = roomManager.getPlayer(room, socket.id).shape;
       room.nextPlayer = socket.id;
-      io.emit("tile-click" + room.id, room); // emit to all clients
+      io.emit("tile-click" + room.id, room); // emit to all clients*/
     });
 
     socket.on("reset-game", (roomid) => {
@@ -102,3 +113,46 @@ let PORT = 5000;
 server.listen(PORT, () => {
   console.log(`Server Live at port ${PORT}`);
 });
+function checkStatus()
+{
+    for (let i = 0; i < 3; i++) 
+    {
+        if (board[i][0] === board[i][1] && board[i][1] === board[i][2] && board[i][2]!=' ') 
+        {
+            gameWon(board[i][0]);
+        }
+    }
+    for (let j = 0; j < 3; j++) 
+    {
+        if (board[0][j] === board[1][j] && board[1][j] === board[2][j] && board[2][j]!=' ') 
+        {
+            gameWon(board[0][j]);   
+        }
+    }
+    if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[2][2]!=' ') 
+    {
+        gameWon(board[0][0]);
+    }
+    if (board[0][2] === board[1][1] && board[1][1] === board[2][0] && board[2][0]!=' ') 
+    {
+    gameWon(board[0][2]);
+    }
+    if(isDraw())
+        matchDraw();
+}
+function isDraw()
+{
+    for(let i=0;i<3;i++)
+    {
+        for(let j=0;j<3;j++)
+        {
+            if(board[i][j]==' ')
+                return false;
+        }
+    }
+    return true;
+}
+function gameWon(s)
+{
+  console.log("game won by " + s);
+}

@@ -12,7 +12,19 @@ socket.on("player-approved", (playersSymbol) =>{
 });
 socket.on("room-full",()=>{
     console.log("sorry, you are not allowed to play");
-})
+});
+socket.on("board-update", (updatedBoard) => {
+    console.log("Updated board received");
+    console.log(updateBoard);
+    for(let i=0;i<3;i++)
+    {
+        for(let j=0;j<3;j++)
+        {
+            board[i][j]=updatedBoard[i][j];
+        }
+        updateBoard();
+    }
+});
 var messageToUser="Hello";
 var msgbox = document.getElementById("msgbox");
 msgbox.style.opacity=1;
@@ -30,7 +42,7 @@ function clicked(a,b)
         changeSymbol();
         updateBoard();
         checkStatus();
-        socket.emit('tile-click',a,b,()=>{
+        socket.emit('tile-click',a,b,sym,()=>{
             console.log("emitted coordinates: " + a + b);
         })
        
