@@ -21,10 +21,13 @@ io.on("connection", (socket) => {
         playersid.push(socket.id);
         socket.emit("player-approved",symbols[players.length-1]);
         io.emit("player-list",players);
+        io.emit("turn-info",turn)
       }else{
         console.log("player "+ playerName + " was rejected");
         socket.emit("room-full");
+        
       }
+      sendRoomInfo();
     });
     socket.on("tile-click", (a,b,sym) => {
       console.log("coordinates received "+sym+": ("+a+","+b+")");
@@ -33,21 +36,24 @@ io.on("connection", (socket) => {
         console.log("valid move");
         board[a][b]=sym;
         io.emit('board-update',board);
-        checkStatus();
         invertTurn();
+        io.emit("turn-info",turn);
+        checkStatus();
+        sendRoomInfo();
       }
       else 
       {
         console.log("Invalid move detected");
         if (turn != sym)
-          socket.emit("message","not your turn");
+          socket.emit("message","Opponent's turn");
         else
-          socket.emit("message","wrong place");
+          socket.emit("message","Invalid Move");
       }
     });
     socket.on("reset-request",()=>
     {
       reset();
+      sendRoomInfo();
     });
     socket.on("disconnect", () =>
     {
@@ -55,18 +61,10 @@ io.on("connection", (socket) => {
       console.log(`User ${socket.id} disconnected from the room`);
       playersid.splice(playersid.indexOf(socket.id),1);
       players.splice(playersid.indexOf(socket.id),1);
-      reset()
+      reset();
+      sendRoomInfo();
       console.log(players);
       console.log(playersid);
-     });
-     socket.on("request-room-info", () =>
-    {
-      if(playerName.length==1)
-      {
-        io.emit("waiting");
-      }else{
-      io.emit("room-info",[playerName[0] + "(X)",playerName[1] + "(O)"]);
-    }
      });
 });
 let PORT = 5000;
@@ -113,16 +111,28 @@ function isDraw()
     }
     return true;
 }
+function getNameFromSymbol(sym)
+{
+  if(sym === "X")
+    return players[0];
+  else
+    return players[1];
+}
 function gameWon(s)
 {
   console.log("game won by " + s);
-  io.emit("game-won", s)
+  io.emit("game-won", s,getNameFromSymbol(s));
 }
 function matchDraw()
 {
   console.log("draw");
   io.emit("game-draw");
 }
+function sendRoomInfo()
+{
+    io.emit("room-info",players);
+}
+
 function invertTurn()
 {
   if(turn==="X")
@@ -143,4 +153,6 @@ function reset()
   board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
   turn="X";
   io.emit("board-update",board);
+  io.emit("reset-complete");
+  io.emit("turn-info",turn);
 }
