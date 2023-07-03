@@ -1,20 +1,34 @@
+// prompt the user the enter his/her name
 input = window.prompt('Enter Your Name:');
 while(input ==='' || input == null)
 {
-    input=window.prompt("Enter your Name");
+    input=window.prompt("Enter your Name:");
 }
-const playerName = input;
-//console.log("Name is" + playerName);
 
+const playerName = input;
 const socket = io("ws://localhost:5000");
-socket.emit("player-joined",playerName, () => {
-    //console.log("Informed the server that a player has joined");
-});
 var sym;
+// send the server a room joining request
+socket.emit("player-joined",playerName, () => {
+    //console.log("Informed the server that you want to join the room");
+});
+// if server approves this client, set this client's symbol as sent by the server
 socket.on("player-approved", (playersSymbol) =>{
     this.sym=playersSymbol;
     //console.log("you have been approved to play with symbol "+ sym);
 });
+// If the room is full , this client will be rejected
+socket.on("room-full",()=>{
+    console.log("sorry, you are not allowed to play");
+    window.prompt("Sorry Room is Full. Please try Again Later")
+});
+
+socket.on("message",(msg)=>{
+    console.log("msg received" + msg);
+    showMessage(msg);
+});
+
+// Game conditions
 socket.on("game-won",(s,winnerName) =>{
     //console.log(s+" won the game");
     showMessage(winnerName+"("+s+") Won !!");
@@ -25,14 +39,8 @@ socket.on("draw", () =>{
     showMessage("DRAW MATCH !!");
     isMoveAllowed=false;
 });
-socket.on("room-full",()=>{
-    console.log("sorry, you are not allowed to play");
-    window.prompt("Sorry Room Full")
-});
-socket.on("message",(msg)=>{
-    console.log("msg received" + msg);
-    showMessage(msg);
-});
+
+// receive the updated board from the server and sync
 socket.on("board-update", (updatedBoard) => {
     console.log("Updated board received");
     console.log(updatedBoard);
@@ -45,14 +53,18 @@ socket.on("board-update", (updatedBoard) => {
         updateBoard();
     }
 });
+
+// when this client receives reset confirmation from the server, handle it
 socket.on("reset-complete",()=>
 {
     isMoveAllowed=true;
-    showMessage("Reset Done");
-});
+    console.log("Reset Done");
+})
+// if the server asks the client to freeze the board, handle it
 socket.on("freeze",()=>{
     isMoveAllowed=false;
 });
+// receive the broadcasted info and update the values accordingly
 socket.on("turn-info",(turnSymbol) =>
 {
     if(turnSymbol ===sym)
@@ -63,16 +75,16 @@ socket.on("turn-info",(turnSymbol) =>
         showMessage("Opponent's turn ");
     }
 });
-socket.on("reset-match",()=>{
-    updateBoard();
-    isMoveAllowed=true;
-});
+
+
 var roominfo1 = document.getElementById("roomInfo1")
 var msgbox = document.getElementById("msgbox");
 var roominfo2 = document.getElementById("roomInfo2");
 var isMoveAllowed=true;
 let bMatrix = [[document.getElementById("g00"),document.getElementById("g01"),document.getElementById("g02")],[document.getElementById("g10"),document.getElementById("g11"),document.getElementById("g12")],[document.getElementById("g20"),document.getElementById("g21"),document.getElementById("g22")]];
 let board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
+
+// when a tile is clicked, send the info to the server
 function clicked(a,b)
 {
     if(isMoveAllowed)
@@ -84,11 +96,13 @@ function clicked(a,b)
 }
 var playersInRoom=[];
 
+// if the user clicks on the reset button, send the request to the server
 function resetButtonClicked()
 {
     socket.emit("reset-request");
     isMoveAllowed=false;
 }
+// function to update the local board according to the board received from the server
 function updateBoard()
 {
     for(let i=0;i<3;i++)
@@ -99,6 +113,8 @@ function updateBoard()
         }
     }
 }
+
+// receive the broadcasted info and accordingly update the values
 socket.on("room-info",(presentinroom) =>
 {
     console.log(presentinroom);
@@ -113,6 +129,8 @@ socket.on("room-info",(presentinroom) =>
     }
 
 });
+
+// a function that helps to show a message to the user . This message can be 'invalid move' , 'not your turn' etc.
 function showMessage(msg)
 {
     msgbox.innerHTML = msg;
