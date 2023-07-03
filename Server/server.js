@@ -7,6 +7,7 @@ const { Server } = require("socket.io");
 const io = new Server(server, { cors: {origin: "*",}, });
 
 // variables and constant declarations
+const PORT = 5000;
 var playersid=[];
 var players=[];
 const symbols=["X","O"];
@@ -72,7 +73,6 @@ io.on("connection", (socket) => {
       console.log(playersid);
      });
 });
-let PORT = 5000;
 
 server.listen(PORT, () => {
   console.log(`Server Live at port ${PORT}`);
@@ -81,33 +81,37 @@ server.listen(PORT, () => {
 
 function checkStatus()
 {
+  // standard game logic, checks if someone has won the game
     for (let i = 0; i < 3; i++) 
     {
         if (board[i][0] === board[i][1] && board[i][1] === board[i][2] && board[i][2]!=' ') 
         {
-            gameWon(board[i][0]);
+          gameWon(board[i][0]);
         }
     }
     for (let j = 0; j < 3; j++) 
     {
         if (board[0][j] === board[1][j] && board[1][j] === board[2][j] && board[2][j]!=' ') 
         {
-            gameWon(board[0][j]);   
+          gameWon(board[0][j]);   
         }
     }
+    // check diagonals
     if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[2][2]!=' ') 
     {
-        gameWon(board[0][0]);
+      gameWon(board[0][0]);
     }
     if (board[0][2] === board[1][1] && board[1][1] === board[2][0] && board[2][0]!=' ') 
     {
-    gameWon(board[0][2]);
+      gameWon(board[0][2]);
     }
+    // no one has won the game, check if draw or not
     if(isDraw())
         matchDraw();
 }
 function isDraw()
 {
+  // match is draw when all the tiles are filled and no one has won
     for(let i=0;i<3;i++)
     {
         for(let j=0;j<3;j++)
@@ -171,7 +175,8 @@ function reset()
 {
   // function to handle reset request sent by a client
   board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]; // empty the board
-  turn="X";
+  turn="X"; // first turn is of 'X'
+  //broadcat the updated board, reset confirmation and turn information, that is, who gives the next turn 
   io.emit("board-update",board);
   io.emit("reset-complete");
   io.emit("turn-info",turn);
