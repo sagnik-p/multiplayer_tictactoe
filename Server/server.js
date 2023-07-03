@@ -5,27 +5,30 @@ const server=http.createServer(app);
 const cors=require("cors");
 const { Server } = require("socket.io");
 const io = new Server(server, { cors: {origin: "*",}, });
+
+// variables and constant declarations
 var playersid=[];
 var players=[];
 const symbols=["X","O"];
-var turn="X";
+var turn="X"; // 'X' starts the match
 var board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
 app.use( cors( {origin: "*",} ) );
 app.get("/", function (req, res) {res.sendFile(__dirname+"/index.html");});
+
+
 io.on("connection", (socket) => {
     socket.on("player-joined", (playerName) => {
-       console.log("new player " + playerName+ " wants to join");
+       console.log("new player " + playerName+ " sent a join request");
       if(!(playerName in players) && players.length<2)
       { 
         players.push(playerName);
         playersid.push(socket.id);
         socket.emit("player-approved",symbols[players.length-1]);
-        io.emit("player-list",players);
-        io.emit("turn-info",turn)
+        //io.emit("player-list",players);
+        //io.emit("turn-info",turn)
       }else{
-        console.log("player "+ playerName + " was rejected");
+        console.log("player "+ playerName + " was rejected because room is full");
         socket.emit("room-full");
-        
       }
       sendRoomInfo();
     });
@@ -33,10 +36,10 @@ io.on("connection", (socket) => {
       console.log("coordinates received "+sym+": ("+a+","+b+")");
       if(board[a][b] === ' ' && turn ===sym && players.length == 2)
       {
-        console.log("valid move");
+        //console.log("valid move received ");
         board[a][b]=sym;
         io.emit('board-update',board);
-        invertTurn();
+        invertTurn(); // change who has to play next
         io.emit("turn-info",turn);
         checkStatus();
         sendRoomInfo();
