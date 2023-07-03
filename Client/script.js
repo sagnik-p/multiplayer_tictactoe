@@ -5,6 +5,8 @@ while(input ==='' || input == null)
     input=window.prompt("Enter your Name:");
 }
 
+
+// declarations
 const playerName = input;
 const socket = io("ws://localhost:5000");
 var sym;
@@ -15,6 +17,7 @@ var isMoveAllowed=true;
 let bMatrix = [[document.getElementById("g00"),document.getElementById("g01"),document.getElementById("g02")],[document.getElementById("g10"),document.getElementById("g11"),document.getElementById("g12")],[document.getElementById("g20"),document.getElementById("g21"),document.getElementById("g22")]];
 let board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
 var playersInRoom=[];
+
 // send the server a room joining request
 socket.emit("player-joined",playerName, () => {
     //console.log("Informed the server that you want to join the room");
@@ -41,6 +44,7 @@ socket.on("game-won",(s,winnerName) =>{
     showMessage(winnerName+"("+s+") Won !!");
     isMoveAllowed=false;
 });
+// server sends the message that the match has resulted in a draw
 socket.on("draw", () =>{
     console.log("Draw");
     showMessage("DRAW MATCH !!");
