@@ -25,8 +25,8 @@ io.on("connection", (socket) => {
         players.push(playerName);
         playersid.push(socket.id);
         socket.emit("player-approved",symbols[players.length-1]);
-        //io.emit("player-list",players);
-        //io.emit("turn-info",turn)
+        io.emit("player-list",players);
+        io.emit("turn-info",turn)
       }else{
         console.log("player "+ playerName + " was rejected because room is full");
         socket.emit("room-full");
@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
         invertTurn(); // change who has to play next
         io.emit("turn-info",turn);
         checkStatus();
-        sendRoomInfo();
+        
       }
       else 
       {
@@ -53,6 +53,7 @@ io.on("connection", (socket) => {
         else
           socket.emit("message","Invalid Move");
       }
+      sendRoomInfo();
     });
 
     socket.on("reset-request",()=>

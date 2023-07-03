@@ -8,6 +8,13 @@ while(input ==='' || input == null)
 const playerName = input;
 const socket = io("ws://localhost:5000");
 var sym;
+var roominfo1 = document.getElementById("roomInfo1")
+var msgbox = document.getElementById("msgbox");
+var roominfo2 = document.getElementById("roomInfo2");
+var isMoveAllowed=true;
+let bMatrix = [[document.getElementById("g00"),document.getElementById("g01"),document.getElementById("g02")],[document.getElementById("g10"),document.getElementById("g11"),document.getElementById("g12")],[document.getElementById("g20"),document.getElementById("g21"),document.getElementById("g22")]];
+let board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
+var playersInRoom=[];
 // send the server a room joining request
 socket.emit("player-joined",playerName, () => {
     //console.log("Informed the server that you want to join the room");
@@ -77,12 +84,7 @@ socket.on("turn-info",(turnSymbol) =>
 });
 
 
-var roominfo1 = document.getElementById("roomInfo1")
-var msgbox = document.getElementById("msgbox");
-var roominfo2 = document.getElementById("roomInfo2");
-var isMoveAllowed=true;
-let bMatrix = [[document.getElementById("g00"),document.getElementById("g01"),document.getElementById("g02")],[document.getElementById("g10"),document.getElementById("g11"),document.getElementById("g12")],[document.getElementById("g20"),document.getElementById("g21"),document.getElementById("g22")]];
-let board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
+
 
 // when a tile is clicked, send the info to the server
 function clicked(a,b)
@@ -94,7 +96,7 @@ function clicked(a,b)
         })
     }
 }
-var playersInRoom=[];
+
 
 // if the user clicks on the reset button, send the request to the server
 function resetButtonClicked()
