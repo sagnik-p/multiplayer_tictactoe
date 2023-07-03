@@ -8,11 +8,11 @@ const io = new Server(server, { cors: {origin: "*",}, });
 
 // variables and constant declarations
 const PORT = 5000;
-var playersid=[];
-var players=[];
+var playersid=[]; // stores the various socket ids present in the room
+var players=[]; // stores the name of the players in the room
 const symbols=["X","O"];
 var turn="X"; // 'X' starts the match
-var board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
+var board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]; // the tictactoe board of the match
 app.use( cors( {origin: "*",} ) );
 app.get("/", function (req, res) {res.sendFile(__dirname+"/index.html");});
 
@@ -175,8 +175,8 @@ function reset()
 {
   // function to handle reset request sent by a client
   board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]; // empty the board
-  turn="X"; // first turn is of 'X'
-  //broadcat the updated board, reset confirmation and turn information, that is, who gives the next turn 
+  turn="X"; // 'X' will give the first turn/move
+  //broadcast the updated board, reset confirmation and turn information 
   io.emit("board-update",board);
   io.emit("reset-complete");
   io.emit("turn-info",turn);
