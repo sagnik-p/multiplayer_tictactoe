@@ -53,15 +53,17 @@ io.on("connection", (socket) => {
           socket.emit("message","Invalid Move");
       }
     });
+
     socket.on("reset-request",()=>
     {
       reset();
       sendRoomInfo();
     });
+
     socket.on("disconnect", () =>
     {
       io.emit("disconnected",getNameFromId(socket.id));
-      console.log(`User ${socket.id} disconnected from the room`);
+      console.log("User"+getNameFromId(socket.id)+"with id "+socket.id +"disconnected from the room");
       playersid.splice(playersid.indexOf(socket.id),1);
       players.splice(playersid.indexOf(socket.id),1);
       reset();
@@ -75,6 +77,8 @@ let PORT = 5000;
 server.listen(PORT, () => {
   console.log(`Server Live at port ${PORT}`);
 });
+
+
 function checkStatus()
 {
     for (let i = 0; i < 3; i++) 
@@ -114,30 +118,39 @@ function isDraw()
     }
     return true;
 }
+
 function getNameFromSymbol(sym)
 {
+  // this function returns the name of player with the given symbol
   if(sym === "X")
     return players[0];
   else
     return players[1];
 }
+
 function gameWon(s)
 {
+  // function to handle game win
   console.log("game won by " + s);
   io.emit("game-won", s,getNameFromSymbol(s));
 }
+
 function matchDraw()
 {
+  // Handle draw match
   console.log("draw");
   io.emit("game-draw");
 }
+
 function sendRoomInfo()
 {
+  // function to broadcast all room details to all clients
     io.emit("room-info",players);
 }
 
 function invertTurn()
 {
+  // change who gives the next turn
   if(turn==="X")
   {
     turn="O";
@@ -147,13 +160,17 @@ function invertTurn()
     turn="X";
   }
 }
+
 function getNameFromId(id)
 {
+  // returns the name of player with a certain socket id
   return players[playersid.indexOf(id)];
 }
+
 function reset()
 {
-  board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']];
+  // function to handle reset request sent by a client
+  board = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]; // empty the board
   turn="X";
   io.emit("board-update",board);
   io.emit("reset-complete");
