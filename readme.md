@@ -62,5 +62,15 @@ npm start
 ```
 CONGRATS! Your client side is setup successfully
 
-OPEN browser tabs or browser windows or even two different browsers
+Open 2 browser tabs or browser windows or even two different browsers
 You will be promted to enter your name
+
+# ENJOY
+
+This is hosted locally 
+In order to play with someone on the other side of the world, You have to
+- Host the client website on some hosting service
+- Host the server code in the cloud , for example AWS Lambda
+
+#### PS: 
+If you want to understand how it works, check the code, It is well documented
