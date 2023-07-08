@@ -26,3 +26,16 @@ npm start
 ```
 
 CONGRATS! you are done with the server side
+you should see this message:
+>Server Live at port 5000
+
+In order to check,
+you can go to http://localhost:5000/
+
+you should get this:
+![SERVER IS LIVE](image.png)
+
+This confirms that your server side is setup
+Now lets setup the Client side
+
+# SETUP CLIENT SIDE
