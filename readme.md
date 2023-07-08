@@ -33,7 +33,8 @@ In order to check,
 you can go to http://localhost:5000/
 
 you should get this:
-![SERVER IS LIVE](image.png)
+![image](https://github.com/sagnik-p/multiplayer_tictactoe/assets/130753205/fee15130-3e58-4edf-81ac-249afb6d8ff2)
+
 
 This confirms that your server side is setup
 Now lets setup the Client side
