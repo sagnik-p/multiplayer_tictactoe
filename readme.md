@@ -5,22 +5,23 @@ built with socket.io
 
 # SETUP SERVER SIDE
 
-its simple
-
-first go inside the 'Server' directory
+Its simple
+Open up a terminal window and follow these steps:
+Steps:
+1. First go inside the 'Server' directory
 ```
 cd .\Server\
 ```
 
-next, install all the modules required
+2. Next, install all the modules required
 ```
 npm install
 ```
-if you get some errror, try this command
+If you get some errror, try this command
 ```
 npm install --force
 ```
-now, in order to start the server, type this
+3. Now, in order to start the server, type this
 ```
 npm start
 ```
