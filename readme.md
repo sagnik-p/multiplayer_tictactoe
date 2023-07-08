@@ -41,16 +41,25 @@ Now lets setup the Client side
 
 # SETUP CLIENT SIDE
 
-This is similar as setting up the server
-first navigate to the "Client" folder
+This is similar as setting up the server.
+Steps:
+1. navigate to the "Client" folder
 ```
 cd ..\Client\
 ```
-install the required packages
+2. install the required packages
 ```
 npm install
 ```
-Run the app
+If you get some errror, try this command
+```
+npm install --force
+```
+3. Run the app
 ```
 npm start
 ```
+CONGRATS! Your client side is setup successfully
+
+OPEN browser tabs or browser windows or even two different browsers
+You will be promted to enter your name
